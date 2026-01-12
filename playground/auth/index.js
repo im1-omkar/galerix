@@ -17,7 +17,7 @@ app.get("/me",(req,res)=>{
     const token  = req.headers.authorization;
     console.log(token)
 
-    //find in the user's tabel
+    //find in the user's tabel0
     const user = users.find((u)=>{
         if(u.token == token) return u;
     });
