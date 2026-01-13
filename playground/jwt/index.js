@@ -1,10 +1,12 @@
 import express from "express";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 const app = express()
 const PORT = 3000;
 
 app.use(express.json())
+app.use(cors())
 
 const users = []
 const jwtSecret = 'JWT_SECRET';
@@ -13,7 +15,8 @@ const jwtSecret = 'JWT_SECRET';
 const auth = (req,res,next)=>{
         
     //extract the token
-    const token = req.headers.authorization
+    const userHeader = req.headers.authorization
+    const token = userHeader.split(" ")[1]
 
     if(token){
         jwt.verify(token,jwtSecret,(err, decoded)=>{
@@ -37,6 +40,10 @@ app.get("/special",auth,(req,res)=>{
     res.json({"message":"accessed to special route"})
 })
 
+
+app.get("/test",(req,res)=>{
+    res.json({"message":"test successful"})
+})
 
 //me route to verify the token
 app.get("/me",(req,res)=>{
@@ -69,6 +76,8 @@ app.get("/me",(req,res)=>{
 //signup route
 app.post("/signup",(req, res)=>{
     //take the usrname(if not already exist) and password and store into db 
+    console.log("req came in the signup endpoint")
+
     const username = req.body.username;
     const password = req.body.password;
 
