@@ -1,6 +1,8 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import connectDB from "./utils/db.js";
+import Users from "./schemas/users.js";
 
 const app = express();
 const PORT = 3000;
@@ -8,6 +10,9 @@ const saltRound = 8;
 const JWT_SECRET = "jwt-secret"
 
 const users = []
+
+//connect the database
+connectDB()
 
 
 app.use(express.json()); //body parser
@@ -59,7 +64,12 @@ app.post("/signup",async (req, res)=>{
     const hash = await bcrypt.hash(password, saltRound)
 
     if(hash){
-        users.push({username, "hashPass": hash})
+        // users.push({username, "hashPass": hash})
+        await Users.create({
+            "user":username,
+            "hashPass": hash
+        })
+        .catch(err => console.log(err.message));
         res.json({"message":"user is registered successfully"})
         return
     }

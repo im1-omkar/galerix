@@ -4,19 +4,14 @@ import {Chat} from "./schema/Chat.js"
 
 
 async function db(){
-    await mongoose.connect("mongodb+srv://admin:mongoTheSmall@cluster0.recove.mongodb.net/?appName=Cluster0")
+    await mongoose.connect("mongodb+srv://admin:mongoTheSmall@cluster0.recove.mongodb.net/galarix")
         .then(()=>{
             console.log("connection made successfully")
         })
         .catch((err)=>{
             console.log("error occur while connecting db")
+            console.log(err.message)
         });
-    
-    await Users.findOne({"roll":38}).then((res)=>{
-        console.log(res)
-    }).catch((err)=>{
-        console.log(err)
-    })
 
     await Chat.create({
         user:"thegreatuser",
@@ -32,4 +27,4 @@ async function db(){
 }
 
 db()
-    
+
