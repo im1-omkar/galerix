@@ -14,6 +14,17 @@ app.use(express.json()); //body parser
 
 connectDB();
 
+function extractTodos(allTodos){
+    const listOfTodos = []
+    
+    allTodos.forEach((u)=>{
+        listOfTodos.push({"id":u._id,"title":u.title, "done":u.done})
+    })
+
+    return listOfTodos;
+
+}
+
 function auth(req, res, next){
     const userHeader = req.headers.authorization;
     const token = userHeader.split(" ")[1]
@@ -21,6 +32,7 @@ function auth(req, res, next){
     try{
         const decoded = jwt.verify(token, JWT_SECRET);
 
+        //username is added to the req
         req.username = decoded.username;
         console.log("authorization is successful")
         next()
@@ -112,12 +124,66 @@ app.post("/signin",async (req,res)=>{
 
 })
 
-app.post("/todo",auth,(req,res)=>{
-    console.log("inside todo")
-    res.json({"message":"inside todo"})
+app.post("/todo",auth,async (req,res)=>{
+    
+    try{
+        const username = req.username;
+        const user = await Users.findOne({"username":username})
+        const userId = user._id;
+        const title = req.body.title;
+        const done = req.body.done;
+
+        await Todos.create({userId:user,title,done})
+        console.log("todo Inserted");
+
+        res.json({"message":"todo inserted successfully"});
+        return
+    }
+    catch(err){
+        console.log(err.message);
+    }
+
 })
 
-app.get("/todos",(req,res)=>{
+app.get("/todos",auth,async(req,res)=>{
+
+    try{
+        const username = req.username;
+        const user = await Users.findOne({username});
+        const userId = (user._id);
+        const allTodos = await Todos.find({"userId":userId});
+        const listOfTodos = extractTodos(allTodos);
+        res.json({"all todos": listOfTodos});
+        return;
+
+    }
+    catch(err){
+        console.log("error while getting the requests: "+ err.message);
+        res.json({"error while getting toods":err.message});
+    }
+
+})
+
+app.patch("/mark/:_id",auth, async (req, res)=>{
+    console.log("reacherd here!!!!!!!")
+    
+    try{
+        const todoId = req.params;
+        const username = req.username;
+
+        const todo = await Todos.findOne({"_id":todoId});
+        const currDone = todo.done;
+        const newDone = !currDone
+
+        const message = await Todos.updateOne({"_id":todoId},{"done":newDone})
+        console.log(message);
+
+        res.json({"message":"updated successfully"});
+    }
+    catch(err){
+        console.log(err.message);
+        res.json({"message: ":err.message});
+    }
 
 })
 

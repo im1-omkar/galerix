@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export async function connectDB(){
 
-    mongoose.connect("mongodb+srv://admin:mongoTheBig@cluster0.recove.mongodb.net/todos").then(()=>{
+    mongoose.connect("").then(()=>{
     console.log("db connected successfully")
     })
     .catch((err)=>{
