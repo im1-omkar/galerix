@@ -1,22 +1,29 @@
-import react, {useState} from "react";
-import PostComponent from "./components/PostComponent";
+import React, { useState } from 'react';
 
-function App() {
- 
+function Posts({itemList}){
 
-  return (
-      <>
-        <Counter></Counter>
-      </>
+  return itemList.map(item =>
+     <div key={item.id}>
+      <h1>hello {item.name}</h1>
+      <p>welcome to the channel</p>
+    </div>
   )
+
 }
 
-function Counter(){
-  const [count, setCount] = useState(0)
+const App = () => {
+    const items =[
+      {id:1, name:"omkar"},
+      {id:2, name:"alex"},
+      {id:3, name:"bob"},
+      {id:4, name:"cat"}
+    ]
 
-  return<>
-    <h1>count is: {count}</h1>
-    <button onClick={()=>{setCount(count + 1)}}>increase</button>
-  </>
-}
-export default App
+    return (
+      <>
+       <Posts itemList={items}></Posts>
+      </>
+    );
+};
+
+export default App;
