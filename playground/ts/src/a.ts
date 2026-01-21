@@ -1,4 +1,7 @@
+import express from "express";
 
-let a:String = "omkar"
+const app = express();
 
-console.log(a)
+app.listen(3000,()=>{
+    console.log("server running on port : " + 3000)
+})
