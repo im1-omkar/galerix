@@ -1,17 +1,19 @@
 
+export const responses = {
+    success : (data:String)=>{
+        return {
+            "success": true,
+            "data": data,
+            "error": null
+        }
+    },
 
-export function success(data:String){
-    return {
-        "success": true,
-        "data": data,
-        "error": null
+    error: (code:number)=>{
+        return {
+            "success":false,
+            "data":null,
+            "error": code
+        }
     }
 }
 
-export function error(code:number){
-    return {
-        "success":false,
-        "data":null,
-        "error": code
-    }
-}
