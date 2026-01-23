@@ -1,5 +1,5 @@
 
-export const responses = {
+const responses = {
     success : (data:String)=>{
         return {
             "success": true,
@@ -8,12 +8,13 @@ export const responses = {
         }
     },
 
-    error: (code:number)=>{
+    error: (error:String)=>{
         return {
             "success":false,
             "data":null,
-            "error": code
+            "error": error
         }
     }
 }
 
+export default responses;

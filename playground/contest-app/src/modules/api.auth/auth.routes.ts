@@ -1,14 +1,13 @@
 import express from "express";
 import { validator } from "../../middlewares/middleware.validator.js";
-//import validSchema from "./auth.validateSchema"
+import validateSchema from "./auth.validateSchema.js";
 //import controller from "./auth.controller"
+import controller from "./auth.controller.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/signup",/**validate(validateSchema.signup) */ /** call controller*/)
+userRouter.post("/signup",validator(validateSchema.signup),controller.signup)
 
-userRouter.post("/signin",(req, res)=>{
-    res.send("health from userRouter POST")
-})
+userRouter.post("/signin", validator(validateSchema.signin), controller.signin)
 
 export default userRouter;
