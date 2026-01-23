@@ -1,6 +1,6 @@
 
 const responses = {
-    success : (data:String)=>{
+    success : (data:any)=>{
         return {
             "success": true,
             "data": data,

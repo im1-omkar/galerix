@@ -1,10 +1,9 @@
 //write overall business logic
 import express from "express";
 import responses  from "../../utils/responses.js";
-import { checkEmail, userEnteryInDb } from "./auth.services.js";
+import { checkEmail, getJWT, getUser, userEnteryInDb } from "./auth.services.js";
 import bcrypt from "bcrypt";
 import { hash } from "zod";
-import jwt from "jsonwebtoken";
 //import {checkEmail} from "./auth.services.ts"
 
 async function signup(req:express.Request, res:express.Response){
@@ -68,30 +67,42 @@ async function signin(req:express.Request,res:express.Response){
 
     try{
         //get out the user from the db whith email = email & get it's hash pass
-        const user = await getUser(email);
+        const user:any = await getUser(email);
 
         if(!user){
             res.status(401).json(responses.error("INVALID_CREDENTIALS"))
             return;
         }
 
+        const hash = user.password;
+        const username = user.name;
+        const role = user.role;
+
         //compare the password 
-        const match = bcrypt.compare(password,hash)
+        const match = await bcrypt.compare(password,hash)
 
         if(!match ){
             res.status(401).json(responses.error("INVALID_CREDENTIALS"));
             return;
         }
 
-        //return the jwt 
-        const JWT_TOKEN = jwt.sign({})
+        //create jwt
+        const JWT_TOKEN:any = getJWT({
+            "name":username,
+            "role":role
+        })
 
         //return success response
+        res.status(200).json(responses.success({
+            "token":JWT_TOKEN
+        }))
 
         
     }
     catch(err:any){
-        console.log("error while signing-in : " + err.message)
+        console.log("error while signing-in : " + err)
+        res.status(500).send("internal server error");
+        return;
     }
 
 }

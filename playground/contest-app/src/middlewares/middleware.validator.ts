@@ -10,8 +10,8 @@ export function validator(validateSchema:any /**here only few specific types of 
             validateSchema.parse(req.body);
             next()
         }
-        catch(err){
-            console.log("invalid body format")
+        catch(err:any){
+            console.log("invalid body format :  " + err.message)
             res.status(400).json(responses.error("INVALID_REQUEST"))
             return
         }

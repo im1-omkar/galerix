@@ -22,10 +22,10 @@ const validateSchema = {
     }),
 
     signin: z.object({
-        "email": z.string()
-                  .email()
+        email: z.string()
+                  .email("invalid email format")
                   .max(100,"too long email"),
-        "password": z.string()
+        password: z.string()
                     .min(8,"atleast 8 chars should be present")
                     .max(128,"pass too long")
                     .regex(/[A-Z]/,"atleast 1 uppercase")

@@ -1,6 +1,9 @@
 //write read code here -> calling db
 import { number } from "zod";
 import { pool } from "../../db/pool.js";
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET = "JWT_SECRET";
 
 /**
  * write a function to check wheter the email already exists
@@ -39,6 +42,15 @@ export async function getUser(email:string){
 
     const user = await pool.query("SELECT * FROM users WHERE email = $1",[email])
 
-    return user
+    return user.rows[0]
 
+}
+
+export function getJWT({name,role} : {name:string,role:string}){
+    const jwtToken = jwt.sign({
+        "name":name,
+        "role":role
+    },JWT_SECRET)
+
+    return jwtToken;
 }
