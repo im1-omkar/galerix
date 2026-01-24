@@ -77,6 +77,7 @@ async function signin(req:express.Request,res:express.Response){
         const hash = user.password;
         const username = user.name;
         const role = user.role;
+        const id = user.id;
 
         //compare the password 
         const match = await bcrypt.compare(password,hash)
@@ -88,6 +89,7 @@ async function signin(req:express.Request,res:express.Response){
 
         //create jwt
         const JWT_TOKEN:any = getJWT({
+            "id":id,
             "name":username,
             "role":role
         })

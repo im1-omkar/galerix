@@ -1,5 +1,5 @@
 //write read code here -> calling db
-import { number } from "zod";
+import { email, number } from "zod";
 import { pool } from "../../db/pool.js";
 import jwt from "jsonwebtoken";
 
@@ -46,8 +46,9 @@ export async function getUser(email:string){
 
 }
 
-export function getJWT({name,role} : {name:string,role:string}){
+export function getJWT({id,name,role} : {id:string,name:string,role:string}){
     const jwtToken = jwt.sign({
+        "id":id,
         "name":name,
         "role":role
     },JWT_SECRET)
