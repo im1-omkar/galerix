@@ -6,9 +6,9 @@ import controller from "./contests.controller.js";
 
 const contestsRouter = express.Router();
 
-contestsRouter.post("/",/**create contests */)
+contestsRouter.post("/", [auth, validator(validateSchema.createContest)], controller.createContest)
 
-contestsRouter.get("/:contestId", [auth, validator(validateSchema.createContest)], controller.createContest)
+contestsRouter.get("/:contestId",/**getContest */)
 
 contestsRouter.post("/:contestId/mcq",(req,res)=>{
     res.status(200).send("/:contestId/mcq POST health")

@@ -18,7 +18,7 @@ const auth = async(req:express.Request, res:express.Response, next: express.Next
         return
     }
 
-    jwt.verify(token, (err, decoded:any)=>{
+    jwt.verify(token, JWT_SECRET,(err, decoded:any)=>{
         if(err){
             res.status(401).json(responses.error("UNAUTHORIZED"))
             return
