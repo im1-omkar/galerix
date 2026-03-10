@@ -1,6 +1,7 @@
 import connectDB from "./db/connectDB";
 import app from "./server";
 import { WebSocketServer } from "ws";
+import initWebSocket from "./webSocket/webSocket";
 
 const PORT = process.env.PORT
 
@@ -12,16 +13,18 @@ const httpServer = app.listen(PORT, ()=>{
 
 /**-----------web-socket------------- */
 
-const wss = new WebSocketServer({server: httpServer});
+initWebSocket(httpServer)
 
-wss.on("connection", (ws)=>{
-    ws.on("error",(err)=>{console.log(err)})
+// const wss = new WebSocketServer({server: httpServer});
 
-    ws.on("message",(message, isBinary)=>{
-        wss.clients.forEach((client)=>{
-            client.send(message)
-        })
-    })
+// wss.on("connection", (ws)=>{
+//     ws.on("error",(err)=>{console.log(err)})
 
-    ws.send("welcome to server!")
-})
+//     ws.on("message",(message, isBinary)=>{
+//         wss.clients.forEach((client)=>{
+//             client.send(message)
+//         })
+//     })
+
+//     ws.send("welcome to server!")
+// })
