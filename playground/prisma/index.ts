@@ -1,18 +1,15 @@
-import { PrismaClient } from "@prisma/client/extension";
+// src/index.ts
+import { prisma } from "./src/db.ts";
 
-const prisma = new PrismaClient()
-
-async function createTodo(){
-    
-    const newUser = await prisma.user.create({
+async function createUser() {
+  const newUser = await prisma.user.create({
     data: {
-        username: "john_doe",
-        password: "hashed_password_here",
-        firstName: "John",
-        lastName: "Doe",
+        email : "hellothere@gmail.com",
+        name  : "hellothere"
     },
-    });
+  });
 
+  console.log(newUser);
 }
 
-createTodo();
+createUser();
